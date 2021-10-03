@@ -2,6 +2,7 @@ package co.kr.studyforcharo
 
 import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,13 +24,17 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.R)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //이부분임
-        binding.clBds.layoutParams.height =
-            requireActivity().windowManager.currentWindowMetrics.bounds.height()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            binding.clBds.layoutParams.height =
+                requireActivity().windowManager.currentWindowMetrics.bounds.height()
+        }
+        else
+            binding.clBds.layoutParams.height = resources.displayMetrics.heightPixels
+
         (dialog as BottomSheetDialog).behavior.apply {
             isFitToContents = false
             state = BottomSheetBehavior.STATE_HALF_EXPANDED
